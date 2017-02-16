@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+
+    <script>
+        var testApp = angular.module('testApp', []);
+        testApp.controller('formController', function($scope, $http){
+            $http.get('http://services.groupkt.com/state/get/IND/all')
+                    .then(function(response) {
+                        console.log(response);
+                        $scope.states = response.data.RestResponse.result;
+                    });
+            var obj = {};
+            obj.name = 'Vivek';
+            obj.city = 'Blr';
+            console.log(obj);
+            $scope.obj = obj;
+            $scope.selectedCity = 'Bangalore';
+            $scope.cities = ['Pune', 'Nagpur', 'Ahmadabad', 'Bangalore', 'Mangalore', 'Jaipur'];
+
+            $scope.country = ['india'];
+
+        });
+    </script>
+</head>
+<body ng-app="testApp" ng-controller="formController" class="container-fluid bg-info">
+
+<table class="table-striped col-lg-12">
+    <tr>
+        <td class="col-lg-6">user name</td>
+        <td class="col-lg-6"><input type="text" ng-model="test"></td>
+    </tr>
+    <tr>
+        <td class="col-lg-6">City</td>
+        <td class="col-lg-6">
+            <select ng-model="selectedCity">
+                <option ng-repeat="c in cities">{{c}}</option> <!--  | filter:'Bangalore' -->
+            </select>
+            {{selectedCity | lowercase}}
+        </td>
+    </tr>
+    <tr>
+        <td class="col-lg-6">State</td>
+        <td>
+            <ul class="pre-scrollable">
+                <li ng-repeat="s in states | filter:test" value="{{s.abbr}}">{{s.name | uppercase }}</li>
+            </ul>
+            {{selectedState | uppercase}}
+        </td>
+    </tr>
+    <tr>
+        <td class="col-lg-6">Country</td>
+        <td class="col-lg-6">
+            <select>
+                <option ng-repeat="c in country">{{c}}</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td class="col-lg-6">Gender</td>
+        <td class="col-lg-6">
+            Male:<input type="radio" value="Male" ng-model="user.gender" name="gender" />
+            Female:<input type="radio" value="Female" ng-model="user.gender" name="gender" />
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
